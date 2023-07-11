@@ -57,13 +57,16 @@ const reqSchema = Yup.object({
 	name: Yup.string().required(),
 });
 
-app.post('/api/v1/email/otp', (req, res) => {
-	const { email, name, code } = req.body;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/api/v1/email/otp', async (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 	// send email with nodemailer
 	try {
-		reqSchema.validate({ email, name });
+		const { email, name, code } = req.body;
+		await reqSchema.validate({ email, name });
 		// send email
 
 		return res.status(200).end({ message: 'Email sent' });
@@ -79,8 +82,7 @@ app.post('/api/v1/email/reset', (req, res) => {
 	// send email with nodemailer
 	try {
 		reqSchema.validate({ email, name });
-		// send email
-
+		// send emai
 		return res.status(200).end({ message: 'Email sent' });
 	} catch (error) {
 		return res.status(400).end({ message: error.message });
