@@ -96,3 +96,12 @@ app.post("/api/v1/email/reset", async (req, res) => {
    return res.status(400).json({ message: error.message });
   }
 });
+
+app.get("/", (req, res) => {
+  return res.status(200).json({ message: "Dambel Smtp Api!" });
+})
+
+app.listen(3000, () => {
+
+
+});
