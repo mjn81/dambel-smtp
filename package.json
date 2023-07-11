@@ -5,8 +5,8 @@
   "description": "SMTP Server for Dambel",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "prod": "node index.js"
+    "dev": "nodemon api/index.js",
+    "prod": "node api/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
