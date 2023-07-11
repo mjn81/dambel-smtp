@@ -1,9 +1,7 @@
-import express from "express";
-import * as Yup from "yup";
-import nodeMailer from "nodemailer";
+const app = require('express')();
+const nodeMailer = require('nodemailer');
+const Yup = require('yup');
 
-
-const app = express();
 
 class NodeMailer {
 	static instance;
@@ -23,7 +21,7 @@ class NodeMailer {
 		});
 	}
 
-	static getInstance(){
+	static getInstance() {
 		if (!NodeMailer.instance) {
 			NodeMailer.instance = new NodeMailer();
 		}
@@ -41,11 +39,7 @@ class NodeMailer {
 
 const getMailer = NodeMailer.getInstance;
 
-const sendEmail = async (
-	to,
-	subject,
-	html,
-) => {
+const sendEmail = async (to, subject, html) => {
 	const mailer = getMailer();
 	const transporter = mailer.getTransporter();
 	const mailOptions = {
@@ -59,45 +53,37 @@ const sendEmail = async (
 };
 
 const reqSchema = Yup.object({
-  email: Yup.string().email().required(),
-  name: Yup.string().required(),
-})
-    
-
-
-
-app.post("/api/v1/email/otp", async (req, res) => {
-  const { email, name, code } = req.body;
-  // send email with nodemailer
-  try {
-    await reqSchema.validate({ email, name });
-    // send email
-
-
-
-    return res.status(200).json({ message: "Email sent" }); 
-  }
-  catch (error) {
-   return res.status(400).json({ message: error.message });
-  }
+	email: Yup.string().email().required(),
+	name: Yup.string().required(),
 });
 
-app.post("/api/v1/email/reset", async (req, res) => {
-  const { email, name, code } = req.body;
-  // send email with nodemailer
-  try {
-    await reqSchema.validate({ email, name });
-    // send email
+app.post('/api/v1/email/otp', async (req, res) => {
+	const { email, name, code } = req.body;
+	// send email with nodemailer
+	try {
+		await reqSchema.validate({ email, name });
+		// send email
 
-
-    return res.status(200).json({ message: "Email sent" }); 
-  }
-  catch (error) {
-   return res.status(400).json({ message: error.message });
-  }
+		return res.status(200).json({ message: 'Email sent' });
+	} catch (error) {
+		return res.status(400).json({ message: error.message });
+	}
 });
 
-app.get("/api", (req, res) => {
+app.post('/api/v1/email/reset', async (req, res) => {
+	const { email, name, code } = req.body;
+	// send email with nodemailer
+	try {
+		await reqSchema.validate({ email, name });
+		// send email
+
+		return res.status(200).json({ message: 'Email sent' });
+	} catch (error) {
+		return res.status(400).json({ message: error.message });
+	}
+});
+
+app.get('/api', (req, res) => {
 	res.setHeader('Content-Type', 'text/html');
 	res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 	res.end(`Hello! Post Email to /api/v1/email/otp or reset`);
