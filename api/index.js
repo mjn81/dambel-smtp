@@ -57,13 +57,13 @@ const reqSchema = Yup.object({
 	name: Yup.string().required(),
 });
 
-app.post('/api/v1/email/otp', async (req, res) => {
+app.post('/api/v1/email/otp', (req, res) => {
 	const { email, name, code } = req.body;
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 	// send email with nodemailer
 	try {
-		await reqSchema.validate({ email, name });
+		reqSchema.validate({ email, name });
 		// send email
 
 		return res.status(200).end({ message: 'Email sent' });
@@ -72,13 +72,13 @@ app.post('/api/v1/email/otp', async (req, res) => {
 	}
 });
 
-app.post('/api/v1/email/reset', async (req, res) => {
+app.post('/api/v1/email/reset', (req, res) => {
 	const { email, name, code } = req.body;
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 	// send email with nodemailer
 	try {
-		await reqSchema.validate({ email, name });
+		reqSchema.validate({ email, name });
 		// send email
 
 		return res.status(200).end({ message: 'Email sent' });
