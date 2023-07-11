@@ -5,8 +5,6 @@ import nodeMailer from "nodemailer";
 
 const app = express();
 
-const PORT = 4000;
-
 class NodeMailer {
 	static instance;
 	user;
@@ -100,13 +98,9 @@ app.post("/api/v1/email/reset", async (req, res) => {
 });
 
 app.get("/api", (req, res) => {
-  res.setHeader('Content-Type', 'text/html');
+	res.setHeader('Content-Type', 'text/html');
 	res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
 	res.end(`Hello! Post Email to /api/v1/email/otp or reset`);
-})
-
-app.listen(PORT, () => {
-	console.log(`API listening on PORT ${PORT}`);
 });
 
 module.exports = app;
