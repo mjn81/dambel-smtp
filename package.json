@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "name": "dambel-smtp",
+  "version": "1.0.0",
+  "description": "SMTP Server for Dambel",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "prod": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.3",
+    "otp-generator": "^4.0.1",
+    "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
