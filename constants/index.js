@@ -25,3 +25,6 @@ exports.getVerifyEmailContent = ({ code, name }) => {
 <p>The Dambel team</p>
 `;
 }
+
+
+exports.TWO_DAY_MILISECOND = 2 * 24 * 60 * 60 * 1000;
