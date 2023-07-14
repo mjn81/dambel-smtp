@@ -1,12 +1,7 @@
-const dotenv = require('dotenv');
 exports.PORT = 3000;
 
 exports.getEnv = (key) => {
-  const result = dotenv.config();
-  if (result.error) {
-    throw result.error;
-  }
-  const value = result.parsed[key];
+  const value = process.env[key];
   if (!value) {
     throw new Error(`[ERROR] Environment variable ${key} is not set`);
   }
