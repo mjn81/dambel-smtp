@@ -19,6 +19,11 @@ const LOGGER_TYPES = {
 	info: '[INFO]'
 }
 
+const EMAIL_TYPES = {
+	verify: 'VERIFY',
+	reset: 'RESET'
+}
+
 const logger = (type,...msgs) => {
 	switch (type) {
 		case LOGGER_TYPES.error:
@@ -60,10 +65,13 @@ app.post('/api/v1/email/verify', async (req, res) => {
 		const { email, name, code } = req.body;
 		await reqSchema.validate({ email, name });
 		const isSent = sentMails.get(email);
-		const sentTime = new Date() - isSent;
-		if (!!isSent && sentTime < TWO_DAY_MILISCOND)
+		const sentTime = new Date() - isSent.created;
+		if (!!isSent && sentTime < TWO_DAY_MILISCOND && isSent.type === EMAIL_TYPES.verify)
 			return res.status(200).json({ message: 'Email sent' });
-		sentMails.set(email, new Date());
+		sentMails.set(email, {
+			created: new Date(),
+			type: EMAIL_TYPES.verify
+		});
 		// send email
 		sendEmail(email, 'Verify Account', getVerifyEmailContent({ code, name }));
 		return res.status(201).json({ message: 'Email sent' });
@@ -78,9 +86,16 @@ app.post('/api/v1/email/reset', async (req, res) => {
 		await reqSchema.validate({ email, name });
 		const isSent = sentMails.get(email);
 		const sentTime = new Date() - isSent;
-		if (!!isSent && sentTime < TWO_DAY_MILISCOND)
+		if (
+			!!isSent &&
+			sentTime < TWO_DAY_MILISCOND &&
+			isSent.type === EMAIL_TYPES.reset
+		)
 			return res.status(200).json({ message: 'Email sent' });
-		sentMails.set(email , new Date());
+		sentMails.set(email, {
+			created: new Date(),
+			type: EMAIL_TYPES.reset,
+		});
 		// send email
 		sendEmail(email, 'Reset password', getResetEmailContent({ code, name }));
 		return res.status(201).json({ message: 'Email sent' });
